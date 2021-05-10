@@ -4,17 +4,17 @@ import (
 	"github.com/Yuideg/firstApp/entity"
 	"github.com/jinzhu/gorm"
 )
-// RoomRepositoryImpl implements the rooms.RoomRepository interface
+// GormRepositoryImpl implements the rooms.RoomRepository interface
 type GormRepositoryImpl struct {
 	Con *gorm.DB
 }
 
-// NewRoomRepositoryImpl will create an object of PsqlRoomRepository
+// NewGormRepositoryImpl will create an object of GormRepositoryImpl
 func NewGormRepositoryImpl(Conn *gorm.DB) *GormRepositoryImpl {
 	return &GormRepositoryImpl{Con: Conn}
 }
 
-// News returns all rooms from the database
+// Students returns all studnts from the database postgresql
 func (rri *GormRepositoryImpl) Students() ([]entity.StudentInfo, []error) {
 	cmnts := []entity.StudentInfo{}
 	fmt.Println("ents gormrepo")
@@ -26,7 +26,7 @@ func (rri *GormRepositoryImpl) Students() ([]entity.StudentInfo, []error) {
 	return cmnts, nil
 }
 
-// NewsById returns a News with a given id
+// Student returns a single student with a specified id
 func (rri *GormRepositoryImpl) Student(id int) (*entity.StudentInfo, []error) {
 	cmnt := &entity.StudentInfo{}
 	errs := rri.Con.First(cmnt, id).GetErrors()
@@ -37,7 +37,7 @@ func (rri *GormRepositoryImpl) Student(id int) (*entity.StudentInfo, []error) {
 	return cmnt, nil
 }
 
-// UpdateNews updates a given object with a new data
+// UpdateStudentInfor updates a given object with a student info data
 func (rri *GormRepositoryImpl) UpdateStudentInfor(r *entity.StudentInfo) (*entity.StudentInfo, []error) {
 	cmnt := r
 	errs := rri.Con.Save(&cmnt).GetErrors()
@@ -47,7 +47,7 @@ func (rri *GormRepositoryImpl) UpdateStudentInfor(r *entity.StudentInfo) (*entit
 	return nil, nil
 }
 
-// DeleteNews removes a News from a database by its id
+// DeleteStudent removes a students data from a database identified by its id
 func (rri *GormRepositoryImpl) DeleteStudent(id int) (*entity.StudentInfo, []error) {
 	cmnt, errs := rri.Student(id)
 
@@ -61,7 +61,7 @@ func (rri *GormRepositoryImpl) DeleteStudent(id int) (*entity.StudentInfo, []err
 	return cmnt, errs
 }
 
-// StoreNews stores new News information to database
+// RegisterStudent stores new Studnts information to database
 func (rri *GormRepositoryImpl) RegisterStudent(r entity.StudentInfo) (*entity.StudentInfo, []error) {
 	cmnt := r
 	errs := rri.Con.Create(&cmnt).GetErrors()

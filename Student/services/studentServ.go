@@ -5,17 +5,17 @@ import (
 	"github.com/Yuideg/firstApp/entity"
 )
 
-// RoomServiceImpl implements rooms.RoomService interface
+// GormServiceImpl implements Student.StudentRepository interface
 type GormServiceImpl struct {
 	sturepo Student.StudentRepository
 }
 
-// NewNewsServiceImpl will create new RoomService object
+// NewGorServiceImpl will create new NewGorServiceImpl object
 func NewGorServiceImpl(st Student.StudentRepository) *GormServiceImpl {
 	return &GormServiceImpl{sturepo: st}
 }
 
-// News returns list of all rooms
+// Students returns list of all Student that exist in the database
 func (rs *GormServiceImpl) Students() ([]entity.StudentInfo, []error) {
 
 	news, err := rs.sturepo.Students()
@@ -27,7 +27,7 @@ func (rs *GormServiceImpl) Students() ([]entity.StudentInfo, []error) {
 	return news, nil
 }
 
-// StoreNews persists new room information
+// RegisterStudent registers  new students  information
 func (rs *GormServiceImpl) RegisterStudent(st entity.StudentInfo) (*entity.StudentInfo, []error) {
 
 	r,err := rs.sturepo.RegisterStudent(st)
@@ -39,7 +39,7 @@ func (rs *GormServiceImpl) RegisterStudent(st entity.StudentInfo) (*entity.Stude
 	return r,nil
 }
 
-// single student
+//Student returns  single student info identified by id
 func (rs *GormServiceImpl)Student(id int) (*entity.StudentInfo, []error) {
 
 	r, err := rs.sturepo.Student(int(id))
@@ -51,7 +51,7 @@ func (rs *GormServiceImpl)Student(id int) (*entity.StudentInfo, []error) {
 	return r, nil
 }
 
-// UpdateNews updates a cateogory with new data
+// UpdateStudentInfor updates a StudentsInfo with new data
 func (rs *GormServiceImpl) UpdateStudentInfor(st *entity.StudentInfo) (*entity.StudentInfo, []error) {
 	r, err := rs.sturepo.UpdateStudentInfor(st)
 	if err != nil {
@@ -59,7 +59,7 @@ func (rs *GormServiceImpl) UpdateStudentInfor(st *entity.StudentInfo) (*entity.S
 	}
 	return r, nil
 }
-// DeleteNews delete a room by its id
+// DeleteStudent delete a students by its id
 func (rs *GormServiceImpl) DeleteStudent(id int) (*entity.StudentInfo, []error) {
 	r,err := rs.sturepo.DeleteStudent(int(id))
 	if err != nil {

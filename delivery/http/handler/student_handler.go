@@ -14,25 +14,24 @@ import (
 	"strconv"
 )
 
-// AdminNewsHandler handles category handler admin requests
+// StudentHandler handles Students handler requests
 type StudentHandler struct {
 	tmpl           *template.Template
 	studentService Student.StudentServices
 }
 
-// NewAdminNewsHandler initializes and returns new AdminCateogryHandler
+// NewStudentHandler initializes and returns new NewStudentHandler
 func NewStudentHandler(T *template.Template, NS Student.StudentServices) *StudentHandler {
 	return &StudentHandler{tmpl: T, studentService: NS}
 }
 
-// AdminNews handle requests on route /admin/newss
-
+// Home handle requests on route /
 func (ach *StudentHandler) Home(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("home")
 	ach.tmpl.ExecuteTemplate(w, "student.html", nil)
 }
 
-
+//StudentsHandler return all students who have an account in the website
 func (ach *StudentHandler) StudentsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("students handler ")
 	Students, err := ach.studentService.Students()
@@ -43,7 +42,7 @@ func (ach *StudentHandler) StudentsHandler(w http.ResponseWriter, r *http.Reques
 	ach.tmpl.ExecuteTemplate(w, "index.html", Students)
 }
 
-// AdminNews handle requests on route /admin/newss
+// StudentHandler handle requests on route /user/students/{id}
 func (ach *StudentHandler) StudentHandler(w http.ResponseWriter, r *http.Request) {
 	idRaw := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idRaw)
@@ -56,7 +55,7 @@ func (ach *StudentHandler) StudentHandler(w http.ResponseWriter, r *http.Request
 	ach.tmpl.ExecuteTemplate(w, "welcome.html", news)
 }
 
-// AdminNewsNew hanlde requests on route /admin/new
+// RegisterStudent hanlde requests on route /user/students/new
 func (ach *StudentHandler) RegisterStudent(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("register")
 	err := r.ParseMultipartForm(32 << 20)
@@ -96,6 +95,7 @@ func (ach *StudentHandler) RegisterStudent(w http.ResponseWriter, r *http.Reques
 	}
 
 }
+//Update prepares for the specific data for update on route /user/students/update/{id}
 func (ach *StudentHandler) Update(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("update start")
 	params := mux.Vars(r)
@@ -107,7 +107,7 @@ func (ach *StudentHandler) Update(w http.ResponseWriter, r *http.Request) {
 	student, _ := ach.studentService.Student(id)
 	ach.tmpl.ExecuteTemplate(w, "update.html", student)
 }
-// AdminNewsUpdate handle requests on /admin/events/update
+// UpdateStudentInfoHandler handle requests on /user/students/update which is supplied by route /user/students/update/{id}
 func (ach *StudentHandler) UpdateStudentInfoHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 	// Parse the form data
@@ -145,7 +145,7 @@ func (ach *StudentHandler) UpdateStudentInfoHandler(w http.ResponseWriter, r *ht
 	http.Redirect(w, r, "/user/students/all", http.StatusSeeOther)
 
 }
-// AdminNewsDelete handle requests on route /events/categories/delete
+// StudentDeleteHandler handle requests on route /user/students/delete/{id}
 func (ach *StudentHandler) StudentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("delete Mode is Running ")
 	params := mux.Vars(r)
@@ -154,8 +154,6 @@ func (ach *StudentHandler) StudentDeleteHandler(w http.ResponseWriter, r *http.R
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	//student, _ := ach.studentService.Student(id)
-	//ach.tmpl.ExecuteTemplate(w, "update.html", student)
 
 		_, err2 := ach.studentService.DeleteStudent(id)
 

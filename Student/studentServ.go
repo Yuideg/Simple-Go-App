@@ -4,7 +4,7 @@ import (
 	"github.com/Yuideg/firstApp/entity"
 )
 
-// CategoryService specifies  category news_services
+// StudentServices specifies  Student services
 type StudentServices interface {
 	Students() ([]entity.StudentInfo, []error)
 	Student(id int) (*entity.StudentInfo, []error)
